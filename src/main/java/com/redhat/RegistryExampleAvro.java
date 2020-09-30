@@ -25,11 +25,34 @@ public class RegistryExampleAvro {
     private Random random = new Random();
     private String[] country = new String[] { "US", "UK", "IR", "FR" };
     private String[] merchantId = new String[] { "MERCH0001", "MERCH0002", "MERCH003", "MERCH004" };
+    String schemaString="{\n" +
+            "   \"type\": \"record\",\n" +
+            "   \"name\": \"transaction\",\n" +
+            "   \"namespace\": \"com.redhat\",\n" +
+            "   \"fields\": [\n" +
+            "       {\n" +
+            "           \"name\": \"id\",\n" +
+            "           \"type\": \"string\"\n" +
+            "       },\n" +
+            "       {\n" +
+            "           \"name\": \"amount\",\n" +
+            "           \"type\": \"string\"\n" +
+            "       },\n" +
+            "        {\n" +
+            "           \"name\": \"country\",\n" +
+            "           \"type\": \"string\"\n" +
+            "       },\n" +
+            "        {\n" +
+            "           \"name\": \"merchantId\",\n" +
+            "           \"type\": \"string\"\n" +
+            "       }\n" +
+            "   ]\n" +
+            "}";
 
     @Outgoing("transaction-out")
     public Flowable<KafkaMessage<Object, Record>> generate() throws IOException {
-        Schema schema = new Schema.Parser().parse(
-            new File(getClass().getClassLoader().getResource("transaction.avsc").getFile()));
+        Schema schema = new Schema.Parser().parse(schemaString
+        );
         AtomicInteger counter= new AtomicInteger();
         return Flowable.interval(1000, TimeUnit.MILLISECONDS)
                 .onBackpressureDrop()
