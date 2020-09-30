@@ -74,7 +74,11 @@ public class RegistryExampleAvro {
     @Incoming("transaction-in")
     public CompletionStage<Void> receive(KafkaMessage<String,Record> message) throws IOException {
         return CompletableFuture.runAsync(() -> {
-            System.out.println(message.getPayload());
+            try {
+                System.out.println(message.getPayload());
+            }catch(Exception e) {
+                System.out.println("Failed"+message.getPayload());
+            }
           });
     }
 
