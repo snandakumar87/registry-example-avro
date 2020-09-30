@@ -32,7 +32,8 @@ public class RegistryExampleAvro {
             "   \"fields\": [\n" +
             "       {\n" +
             "           \"name\": \"id\",\n" +
-            "           \"type\": \"string\"\n" +
+            "           \"type\": \"string\",\n" +
+            "           \"minimum\": 0\n" +
             "       },\n" +
             "       {\n" +
             "           \"name\": \"amount\",\n" +
