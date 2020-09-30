@@ -26,28 +26,28 @@ public class RegistryExampleAvro {
     private String[] country = new String[] { "US", "UK", "NZ","CN","IN"};
     private String[] merchantId = new String[] { "MERCH0001", "MERCH0002", "MERCH003", "MERCH004" };
     String schemaString="{\n" +
-            "   \"type\": \"record\",\n" +
-            "   \"name\": \"transaction\",\n" +
-            "   \"namespace\": \"com.redhat\",\n" +
-            "   \"fields\": [\n" +
-            "       {\n" +
-            "           \"name\": \"id\",\n" +
-            "           \"type\": \"string\",\n" +
-            "           \"minimum\": 0\n" +
-            "       },\n" +
-            "       {\n" +
-            "           \"name\": \"amount\",\n" +
-            "           \"type\": \"string\"\n" +
-            "       },\n" +
-            "        {\n" +
-            "           \"name\": \"country\",\n" +
-            "           \"type\": \"string\"\n" +
-            "       },\n" +
-            "        {\n" +
-            "           \"name\": \"merchantId\",\n" +
-            "           \"type\": \"string\"\n" +
-            "       }\n" +
-            "   ]\n" +
+            "\t\"type\": \"record\",\n" +
+            "\t\"name\": \"transaction\",\n" +
+            "\t\"namespace\": \"com.redhat\",\n" +
+            "\t\"fields\": [{\n" +
+            "\t\t\t\"name\": \"id\",\n" +
+            "\t\t\t\"type\": \"string\",\n" +
+            "\t\t\t\"minimum\": 0\n" +
+            "\t\t},\n" +
+            "\t\t{\n" +
+            "\t\t\t\"name\": \"amount\",\n" +
+            "\t\t\t\"type\": \"string\"\n" +
+            "\t\t},\n" +
+            "\t\t{\n" +
+            "\t\t\t\"type\": \"enum\",\n" +
+            "\t\t\t\"name\": \"country\",\n" +
+            "\t\t\t\"symbols\": [\"US\", \"UK\", \"IR\", \"FR\"]\n" +
+            "\t\t},\n" +
+            "\t\t{\n" +
+            "\t\t\t\"name\": \"merchantId\",\n" +
+            "\t\t\t\"type\": \"string\"\n" +
+            "\t\t}\n" +
+            "\t]\n" +
             "}";
 
     @Outgoing("transaction-out")
