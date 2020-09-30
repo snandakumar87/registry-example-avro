@@ -58,7 +58,7 @@ public class RegistryExampleAvro {
                 .onBackpressureDrop()
                 .map(tick -> {
                     Record record = new GenericData.Record(schema);
-                    record.put("id", counter.getAndIncrement());
+                    record.put("id", String.valueOf(counter.getAndIncrement()));
                     record.put("country", country[random.nextInt(4)]);
                     record.put("merchantId", merchantId[random.nextInt(4)]);
                     record.put("amount", String.format("%.2f", random.nextDouble() * 100));
