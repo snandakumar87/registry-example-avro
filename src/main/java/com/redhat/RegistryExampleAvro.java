@@ -39,9 +39,13 @@ public class RegistryExampleAvro {
             "\t\t\t\"type\": \"string\"\n" +
             "\t\t},\n" +
             "\t\t{\n" +
-            "\t\t\t\"type\": \"enum\",\n" +
             "\t\t\t\"name\": \"country\",\n" +
-            "\t\t\t\"symbols\": [\"US\", \"UK\", \"IR\", \"FR\"]\n" +
+            "\t\t\t\"type\": {\n" +
+            "\t\t\t\t\"name\": \"EnumType\",\n" +
+            "\t\t\t\t\"type\": \"enum\",\n" +
+            "\t\t\t\t\"symbols\": [\"US\", \"UK\", \"IR\", \"FR\"]\n" +
+            "\t\t\t}\n" +
+            "\n" +
             "\t\t},\n" +
             "\t\t{\n" +
             "\t\t\t\"name\": \"merchantId\",\n" +
