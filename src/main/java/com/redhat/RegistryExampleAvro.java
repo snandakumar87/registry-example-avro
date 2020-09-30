@@ -54,7 +54,7 @@ public class RegistryExampleAvro {
     public Flowable<KafkaMessage<Object, Record>> generate() throws IOException {
         Schema schema = new Schema.Parser().parse(schemaString
         );
-        AtomicInteger counter= new AtomicInteger();
+        AtomicInteger counter= new AtomicInteger(-3);
         return Flowable.interval(1000, TimeUnit.MILLISECONDS)
                 .onBackpressureDrop()
                 .map(tick -> {
