@@ -23,7 +23,7 @@ import io.smallrye.reactive.messaging.kafka.KafkaMessage;
 public class RegistryExampleAvro {
 
     private Random random = new Random();
-    private String[] country = new String[] { "US", "UK", "IR", "FR" };
+    private String[] country = new String[] { "US", "UK", "IR", "FR",null };
     private String[] merchantId = new String[] { "MERCH0001", "MERCH0002", "MERCH003", "MERCH004" };
     String schemaString="{\n" +
             "   \"type\": \"record\",\n" +
@@ -60,7 +60,7 @@ public class RegistryExampleAvro {
                 .map(tick -> {
                     Record record = new GenericData.Record(schema);
                     record.put("id", String.valueOf(counter.getAndIncrement()));
-                    record.put("country", null);
+                    record.put("country", country[random.nextInt(4)]);
                     record.put("merchantId", merchantId[random.nextInt(4)]);
                     record.put("amount", String.format("%.2f", random.nextDouble() * 100));
                     return KafkaMessage.of(record.get("transaction"), record);
