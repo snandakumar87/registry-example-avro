@@ -1,7 +1,8 @@
 package com.redhat;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -72,16 +73,44 @@ public class RegistryExampleAvro {
         return null;
     }
 
+    private Map<Integer, Record> stations = new HashMap<>();
+
+    @Outgoing("transaction-in")
+    public Flowable<KafkaMessage<Object, Record>> generateWhiteList() {
+        Schema schema = new Schema.Parser().parse(schemaString
+        );
+        AtomicInteger counter= new AtomicInteger();
+        return Flowable.interval(500, TimeUnit.MILLISECONDS)
+                .onBackpressureDrop()
+                .map(tick -> {
+                    Record record = stations.get(counter.incrementAndGet());
+                    record.put("id", String.valueOf(record.get("id")));
+                    record.put("country", stations.get("country"));
+                    record.put("merchantId", stations.get("merchantId"));
+                    record.put("amount", stations.get("amount"));
+                    return KafkaMessage.of(record.get("transaction"), record);
+
+                });
+    }
+
+
     @Incoming("transaction-out")
-    public CompletionStage<Void> receive(KafkaMessage<String,Record> message) throws IOException {
+    public CompletionStage<Void> receive(KafkaMessage<Integer,Record> message) throws IOException {
+        AtomicInteger counter= new AtomicInteger();
         return CompletableFuture.runAsync(() -> {
             try {
-                String country = (String) message.getPayload().get("country");
-                System.out.println("From consumer"+country);
-                System.out.println(message.getPayload());
+                if(message.getPayload().get("merchantId").equals("MERCH0001") && message.getPayload().get("country") == "UK") {
+                    System.out.println("Failed Country mismatch");
+                } if(message.getPayload().get("merchantId").equals("MERCH0002") && message.getPayload().get("country") == "IR") {
+                    System.out.println("Failed Country mismatch");
+                } else {
+                    stations.put(counter.incrementAndGet(),message.getPayload());
+                }
+
             }catch(Exception e) {
                 e.printStackTrace();
                 System.out.println("Failed"+message.getPayload());
+
             }
           });
     }
