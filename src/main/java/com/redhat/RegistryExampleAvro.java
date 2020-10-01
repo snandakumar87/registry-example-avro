@@ -23,7 +23,7 @@ import io.smallrye.reactive.messaging.kafka.KafkaMessage;
 public class RegistryExampleAvro {
 
     private Random random = new Random();
-    private String[] country = new String[] { "US", "UK", "NZ","CN","IN"};
+    private String[] country = new String[] { "US", "UK", "IR","FR"};
     private String[] merchantId = new String[] { "MERCH0001", "MERCH0002", "MERCH003", "MERCH004" };
     String schemaString="{\n" +
             "\t\"type\": \"record\",\n" +
