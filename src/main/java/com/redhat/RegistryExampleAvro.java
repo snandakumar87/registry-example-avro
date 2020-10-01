@@ -55,20 +55,25 @@ public class RegistryExampleAvro {
             "}";
 
     @Outgoing("transaction-out")
-    public Flowable<KafkaMessage<Object, Record>> generate() throws IOException {
-        Schema schema = new Schema.Parser().parse(schemaString
-        );
-        AtomicInteger counter= new AtomicInteger(-3);
-        return Flowable.interval(1000, TimeUnit.MILLISECONDS)
-                .onBackpressureDrop()
-                .map(tick -> {
-                    Record record = new GenericData.Record(schema);
-                    record.put("id", String.valueOf(counter.getAndIncrement()));
-                    record.put("country", country[random.nextInt(4)]);
-                    record.put("merchantId", merchantId[random.nextInt(4)]);
-                    record.put("amount", String.format("%.2f", random.nextDouble() * 100));
-                    return KafkaMessage.of(record.get("transaction"), record);
-                });
+    public Flowable<KafkaMessage<Object, Record>> generate()  {
+        try {
+            Schema schema = new Schema.Parser().parse(schemaString
+            );
+            AtomicInteger counter = new AtomicInteger(-3);
+            return Flowable.interval(1000, TimeUnit.MILLISECONDS)
+                    .onBackpressureDrop()
+                    .map(tick -> {
+                        Record record = new GenericData.Record(schema);
+                        record.put("id", String.valueOf(counter.getAndIncrement()));
+                        record.put("country", country[random.nextInt(4)]);
+                        record.put("merchantId", merchantId[random.nextInt(4)]);
+                        record.put("amount", String.format("%.2f", random.nextDouble() * 100));
+                        return KafkaMessage.of(record.get("transaction"), record);
+                    });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Incoming("transaction-in")
