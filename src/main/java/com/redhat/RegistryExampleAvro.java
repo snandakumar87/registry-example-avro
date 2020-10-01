@@ -80,6 +80,7 @@ public class RegistryExampleAvro {
                 System.out.println("From consumer"+record.get("country"));
                 System.out.println(message.getPayload());
             }catch(Exception e) {
+                e.printStackTrace();
                 System.out.println("Failed"+message.getPayload());
             }
           });
