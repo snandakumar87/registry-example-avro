@@ -80,11 +80,11 @@ public class RegistryExampleAvro {
         System.out.println("came here");
         Schema schema = new Schema.Parser().parse(schemaString
         );
-        AtomicInteger counter= new AtomicInteger();
+
         return Flowable.interval(500, TimeUnit.MILLISECONDS)
                 .onBackpressureDrop()
                 .map(tick -> {
-                    Record record = stations.get(counter.incrementAndGet());
+                    Record record = stations.get(counter);
                     record.put("id", String.valueOf(record.get("id")));
                     record.put("country", stations.get("country"));
                     record.put("merchantId", stations.get("merchantId"));
@@ -94,10 +94,10 @@ public class RegistryExampleAvro {
                 });
     }
 
-
+    static int counter=0;
     @Incoming("transaction-out")
     public CompletionStage<Void> receive(KafkaMessage<Integer,Record> message) throws IOException {
-        AtomicInteger counter= new AtomicInteger();
+
         return CompletableFuture.runAsync(() -> {
             try {
                 if(message.getPayload().get("merchantId").equals("MERCH0001") && message.getPayload().get("country") == "UK") {
@@ -105,7 +105,7 @@ public class RegistryExampleAvro {
                 } if(message.getPayload().get("merchantId").equals("MERCH0002") && message.getPayload().get("country") == "IR") {
                     System.out.println("Failed Country mismatch"+stations);
                 } else {
-                    stations.put(counter.incrementAndGet(),message.getPayload());
+                    stations.put(++counter,message.getPayload());
                 }
 
             }catch(Exception e) {
