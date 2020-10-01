@@ -73,10 +73,11 @@ public class RegistryExampleAvro {
         return null;
     }
 
-    private Map<Integer, Record> stations = new HashMap<>();
+    private static Map<Integer, Record> stations = new HashMap<>();
 
     @Outgoing("transaction-in")
     public Flowable<KafkaMessage<Object, Record>> generateWhiteList() {
+        System.out.println("came here");
         Schema schema = new Schema.Parser().parse(schemaString
         );
         AtomicInteger counter= new AtomicInteger();
