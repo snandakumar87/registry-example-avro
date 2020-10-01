@@ -101,9 +101,9 @@ public class RegistryExampleAvro {
         return CompletableFuture.runAsync(() -> {
             try {
                 if(message.getPayload().get("merchantId").equals("MERCH0001") && message.getPayload().get("country") == "UK") {
-                    System.out.println("Failed Country mismatch");
+                    System.out.println("Failed Country mismatch"+stations);
                 } if(message.getPayload().get("merchantId").equals("MERCH0002") && message.getPayload().get("country") == "IR") {
-                    System.out.println("Failed Country mismatch");
+                    System.out.println("Failed Country mismatch"+stations);
                 } else {
                     stations.put(counter.incrementAndGet(),message.getPayload());
                 }
